@@ -1,9 +1,11 @@
 namespace WaitUntil {
-    //% block="%condition まで待つ"
+    /**
+     * 条件が true になるまで待つ
+     */
+    //% block="条件 %condition まで待つ"
     //% condition.shadow=logic_boolean
-    //% shim=TD_ID
-    export function waitUntil(condition: boolean): void {
-        while (!condition) {
+    export function waitUntil(condition: () => boolean): void {
+        while (!condition()) {
             basic.pause(20)
         }
     }
