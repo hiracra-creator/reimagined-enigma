@@ -1,15 +1,18 @@
-//% color="#ff8800" weight=90 icon="\uf017" namespace WaitUntil {
+//% color="#ff8800" weight=90 icon="\uf017"
+namespace WaitUntil {
 
     /**
-     * Wait until a condition becomes true
-     * @param condition The logic to check repeatedly
+     * 条件が true になるまで待つ
      */
-    //% block="%condition|まで待つ"
+    //% block="%condition まで待つ"
     //% condition.shadow=logic_boolean
-    export function waitUntil(condition: () => boolean): void {
-        // We call condition() as a function inside the loop
-        while (!condition()) {
-            basic.pause(20);
+    export function waitUntil(condition: boolean): void {
+        while (!evalCondition(() => condition)) {
+            basic.pause(20)
         }
     }
-}
+
+    // boolean を毎回評価し直すための内部関数
+    function evalCondition(fn: () => boolean): boolean {
+        return fn()
+    }
