@@ -2,13 +2,13 @@ namespace WaitBlocks {
 
     //% color=#ff8800 icon="\uf017" block="待つ"
 
-    // ★ 機能は変えず、条件を毎回評価するための最小限の追加
+    // 条件を毎回評価するための最小限の仕組み（機能は変えない）
     function evalCondition(fn: () => boolean): boolean {
         return fn()
     }
 
     // ============================
-    //  A / B ボタン（基本）
+    //  A ボタン
     // ============================
 
     //% block="Aボタンが押されるまで待つ"
@@ -28,6 +28,10 @@ namespace WaitBlocks {
         }
     }
 
+    // ============================
+    //  B ボタン
+    // ============================
+
     //% block="Bボタンが押されるまで待つ"
     export function waitB(): void {
         while (!evalCondition(() => input.buttonIsPressed(Button.B))) {
@@ -45,6 +49,10 @@ namespace WaitBlocks {
         }
     }
 
+    // ============================
+    //  A+B 同時押し
+    // ============================
+
     //% block="A+Bが同時に押されるまで待つ"
     export function waitAB(): void {
         while (!evalCondition(() =>
@@ -57,14 +65,12 @@ namespace WaitBlocks {
 
     //% block="A+Bが離されるまで待つ"
     export function waitABReleased(): void {
-        // 押されるのを待つ
         while (!evalCondition(() =>
             input.buttonIsPressed(Button.A) &&
             input.buttonIsPressed(Button.B)
         )) {
             basic.pause(20)
         }
-        // どちらかが離されるのを待つ
         while (!evalCondition(() =>
             !(input.buttonIsPressed(Button.A) &&
               input.buttonIsPressed(Button.B))
@@ -72,6 +78,10 @@ namespace WaitBlocks {
             basic.pause(20)
         }
     }
+
+    // ============================
+    //  A または B
+    // ============================
 
     //% block="AまたはBが押されるまで待つ"
     export function waitAorB(): void {
@@ -83,8 +93,26 @@ namespace WaitBlocks {
         }
     }
 
+    //% block="AまたはBが離されるまで待つ"
+    export function waitAorBReleased(): void {
+        // まず押されるのを待つ
+        while (!evalCondition(() =>
+            input.buttonIsPressed(Button.A) ||
+            input.buttonIsPressed(Button.B)
+        )) {
+            basic.pause(20)
+        }
+        // どちらも離されるまで待つ
+        while (!evalCondition(() =>
+            !input.buttonIsPressed(Button.A) &&
+            !input.buttonIsPressed(Button.B)
+        )) {
+            basic.pause(20)
+        }
+    }
+
     // ============================
-    //  ロゴ（V2専用）
+    //  ロゴ（V2専用） ← 最下部にまとめる
     // ============================
 
     //% block="ロゴがタッチされるまで待つ (V2専用)"
