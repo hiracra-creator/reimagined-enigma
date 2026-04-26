@@ -2,25 +2,33 @@ namespace WaitBlocks {
 
     //% color=#ff8800 icon="\uf017" block="待つ"
 
+    // ★機能は変えず、条件を毎回評価するための最小限の追加
+    function evalCondition(fn: () => boolean): boolean {
+        return fn()
+    }
+
     // ===== A / B 基本 =====
 
     //% block="Aボタンが押されるまで待つ"
     export function waitA(): void {
-        while (!input.buttonIsPressed(Button.A)) {
+        while (!evalCondition(() => input.buttonIsPressed(Button.A))) {
             basic.pause(20)
         }
     }
 
     //% block="Bボタンが押されるまで待つ"
     export function waitB(): void {
-        while (!input.buttonIsPressed(Button.B)) {
+        while (!evalCondition(() => input.buttonIsPressed(Button.B))) {
             basic.pause(20)
         }
     }
 
     //% block="AまたはBが押されるまで待つ"
     export function waitAorB(): void {
-        while (!(input.buttonIsPressed(Button.A) || input.buttonIsPressed(Button.B))) {
+        while (!evalCondition(() =>
+            input.buttonIsPressed(Button.A) ||
+            input.buttonIsPressed(Button.B)
+        )) {
             basic.pause(20)
         }
     }
@@ -29,14 +37,14 @@ namespace WaitBlocks {
 
     //% block="ロゴがタッチされるまで待つ"
     export function waitLogo(): void {
-        while (!input.logoIsPressed()) {
+        while (!evalCondition(() => input.logoIsPressed())) {
             basic.pause(20)
         }
     }
 
     //% block="ロゴが離されるまで待つ"
     export function waitLogoReleased(): void {
-        while (input.logoIsPressed()) {
+        while (!evalCondition(() => !input.logoIsPressed())) {
             basic.pause(20)
         }
     }
@@ -45,7 +53,10 @@ namespace WaitBlocks {
 
     //% block="Aまたはロゴがタッチされるまで待つ"
     export function waitAorLogo(): void {
-        while (!(input.buttonIsPressed(Button.A) || input.logoIsPressed())) {
+        while (!evalCondition(() =>
+            input.buttonIsPressed(Button.A) ||
+            input.logoIsPressed()
+        )) {
             basic.pause(20)
         }
     }
