@@ -1,11 +1,16 @@
 namespace WaitUntil {
     /**
-     * 条件が true になるまで待つ
+     * Aボタンが押されるまで待つ
      */
-    //% block="%condition まで待つ"
-    //% condition.shadow=logic_boolean
-    export function waitUntil(condition: () => boolean): void {
-        while (!condition()) {
+    //% block="Aボタンが押されるまで待つ"
+    export function waitButtonA(): void {
+        let done = false
+
+        input.onButtonPressed(Button.A, function () {
+            done = true
+        })
+
+        while (!done) {
             basic.pause(20)
         }
     }
