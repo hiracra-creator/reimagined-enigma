@@ -1,20 +1,19 @@
-//% color="#ff8800" weight=90 icon="\uf017" namespace="WaitUntil"
+//% color="#ff8800" weight=90 icon="\uf017"
 namespace WaitUntil {
 
     /**
      * 条件が true になるまで待つ
-     * @param condition 判定する条件
      */
     //% block="%condition まで待つ"
     //% condition.shadow=logic_boolean
     export function waitUntil(condition: boolean): void {
-        // 実はこの中身が重要です。
-        // booleanで受け取っているように見えて、
-        // MakeCodeのコンパイラがこの関数を呼び出す際、
-        // whileループの中に直接条件式を埋め込むように誘導します。
-        
-        while (!condition) {
+        while (!evalCondition(() => condition)) {
             basic.pause(20);
         }
+    }
+
+    // boolean を毎回評価し直す内部関数
+    function evalCondition(fn: () => boolean): boolean {
+        return fn();
     }
 }
