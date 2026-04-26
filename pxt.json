@@ -1,0 +1,9 @@
+{
+  "name": "waituntil",
+  "version": "0.0.1",
+  "description": "Wait until custom block",
+  "files": [
+    "waituntil.ts",
+    "main.ts"
+  ]
+}
