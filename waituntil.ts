@@ -4,6 +4,16 @@ namespace WaitUntil {
     /**
      * 条件が true になるまで待つ
      */
+    //% block=" %condition まで待つ"
+    export function waitUntil(condition: () => boolean): void {
+        while (!condition()) {
+            basic.pause(20)
+        }
+    }
+
+    /**
+     * 条件が true になるまで待つ
+     */
     //% block="条件が真になるまで待つ %condition"
     export function waitUntil(condition: () => boolean): void {
         while (!condition()) {
