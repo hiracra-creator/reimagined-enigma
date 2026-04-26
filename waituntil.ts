@@ -18,6 +18,16 @@ namespace WaitBlocks {
         }
     }
 
+    //% block="Aボタンが離されるまで待つ"
+    export function waitAReleased(): void {
+        while (!evalCondition(() => input.buttonIsPressed(Button.A))) {
+            basic.pause(20)
+        }
+        while (!evalCondition(() => !input.buttonIsPressed(Button.A))) {
+            basic.pause(20)
+        }
+    }
+
     //% block="Bボタンが押されるまで待つ"
     export function waitB(): void {
         while (!evalCondition(() => input.buttonIsPressed(Button.B))) {
@@ -25,12 +35,12 @@ namespace WaitBlocks {
         }
     }
 
-    //% block="AまたはBが押されるまで待つ"
-    export function waitAorB(): void {
-        while (!evalCondition(() =>
-            input.buttonIsPressed(Button.A) ||
-            input.buttonIsPressed(Button.B)
-        )) {
+    //% block="Bボタンが離されるまで待つ"
+    export function waitBReleased(): void {
+        while (!evalCondition(() => input.buttonIsPressed(Button.B))) {
+            basic.pause(20)
+        }
+        while (!evalCondition(() => !input.buttonIsPressed(Button.B))) {
             basic.pause(20)
         }
     }
@@ -39,6 +49,34 @@ namespace WaitBlocks {
     export function waitAB(): void {
         while (!evalCondition(() =>
             input.buttonIsPressed(Button.A) &&
+            input.buttonIsPressed(Button.B)
+        )) {
+            basic.pause(20)
+        }
+    }
+
+    //% block="A+Bが離されるまで待つ"
+    export function waitABReleased(): void {
+        // 押されるのを待つ
+        while (!evalCondition(() =>
+            input.buttonIsPressed(Button.A) &&
+            input.buttonIsPressed(Button.B)
+        )) {
+            basic.pause(20)
+        }
+        // どちらかが離されるのを待つ
+        while (!evalCondition(() =>
+            !(input.buttonIsPressed(Button.A) &&
+              input.buttonIsPressed(Button.B))
+        )) {
+            basic.pause(20)
+        }
+    }
+
+    //% block="AまたはBが押されるまで待つ"
+    export function waitAorB(): void {
+        while (!evalCondition(() =>
+            input.buttonIsPressed(Button.A) ||
             input.buttonIsPressed(Button.B)
         )) {
             basic.pause(20)
@@ -58,6 +96,9 @@ namespace WaitBlocks {
 
     //% block="ロゴが離されるまで待つ (V2専用)"
     export function waitLogoReleased(): void {
+        while (!evalCondition(() => input.logoIsPressed())) {
+            basic.pause(20)
+        }
         while (!evalCondition(() => !input.logoIsPressed())) {
             basic.pause(20)
         }
@@ -86,7 +127,8 @@ namespace WaitBlocks {
     //% block="A+Bまたはロゴがタッチされるまで待つ (V2専用)"
     export function waitABorLogo(): void {
         while (!evalCondition(() =>
-            (input.buttonIsPressed(Button.A) && input.buttonIsPressed(Button.B)) ||
+            (input.buttonIsPressed(Button.A) &&
+             input.buttonIsPressed(Button.B)) ||
             input.logoIsPressed()
         )) {
             basic.pause(20)
